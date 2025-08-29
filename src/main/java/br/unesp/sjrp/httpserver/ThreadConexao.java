@@ -16,11 +16,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-import java.io.File;
+package br.unesp.sjrp.httpserver;
+
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
-import java.nio.file.Files;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -57,24 +58,42 @@ public class ThreadConexao implements Runnable {
                 }
 
                 //se o caminho foi igual a / entao deve pegar o /index.html
-                if (requisicao.getRecurso().equals("/")) {
-                    requisicao.setRecurso("index.html");
+                String nomeArquivo = requisicao.getRecurso();
+                if (nomeArquivo.equals("/")) {
+                    nomeArquivo = "/index.html";
                 }
-                //abre o arquivo pelo caminho
-                File arquivo = new File(requisicao.getRecurso().replaceFirst("/", ""));
+                
+                // Remove a barra inicial se existir para acessar o resource
+                if (nomeArquivo.startsWith("/")) {
+                    nomeArquivo = nomeArquivo.substring(1);
+                }
 
                 RespostaHTTP resposta;
+                byte[] conteudoArquivo;
 
-                //se o arquivo existir então criamos a reposta de sucesso, com status 200
-                if (arquivo.exists()) {
+                // Tenta carregar o arquivo do classpath (recursos)
+                InputStream resourceStream = ThreadConexao.class.getClassLoader().getResourceAsStream(nomeArquivo);
+                
+                if (resourceStream != null) {
+                    // Arquivo encontrado, criar resposta de sucesso
                     resposta = new RespostaHTTP(requisicao.getProtocolo(), 200, "OK");
+                    conteudoArquivo = resourceStream.readAllBytes();
+                    resourceStream.close();
                 } else {
-                    //se o arquivo não existe então criamos a reposta de erro, com status 404
+                    // Arquivo não encontrado, criar resposta de erro 404
                     resposta = new RespostaHTTP(requisicao.getProtocolo(), 404, "Not Found");
-                    arquivo = new File("404.html");
+                    InputStream errorStream = ThreadConexao.class.getClassLoader().getResourceAsStream("404.html");
+                    if (errorStream != null) {
+                        conteudoArquivo = errorStream.readAllBytes();
+                        errorStream.close();
+                    } else {
+                        // Fallback se 404.html não existir
+                        conteudoArquivo = "<html><body><h1>404 - Not Found</h1></body></html>".getBytes();
+                    }
                 }
-                //lê todo o conteúdo do arquivo para bytes e gera o conteudo de resposta
-                resposta.setConteudoResposta(Files.readAllBytes(arquivo.toPath()));
+
+                //define o conteúdo da resposta
+                resposta.setConteudoResposta(conteudoArquivo);
                 //converte o formato para o GMT espeficicado pelo protocolo HTTP
                 String dataFormatada = Util.formatarDataGMT(new Date());
                 //cabeçalho padrão da resposta HTTP/1.1

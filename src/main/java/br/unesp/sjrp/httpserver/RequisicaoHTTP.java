@@ -16,6 +16,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+package br.unesp.sjrp.httpserver;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -91,7 +93,7 @@ public class RequisicaoHTTP {
         this.protocolo = protocolo;
     }
 
-    public void setCabecalhos(Map header) {
+    public void setCabecalhos(Map<String, List<String>> header) {
         this.cabecalhos = header;
     }
 
