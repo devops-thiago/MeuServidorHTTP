@@ -43,19 +43,16 @@ class UtilTest {
         cal.set(2024, Calendar.AUGUST, 29, 12, 30, 45); // Note: Calendar.AUGUST is 7, not 8
         Date specificDate = cal.getTime();
         
-        // Note: The actual implementation creates a new Date() inside the method,
-        // so it won't use the parameter passed. This test verifies the current behavior.
         String formattedDate = Util.formatarDataGMT(specificDate);
         
         assertNotNull(formattedDate);
         assertTrue(formattedDate.endsWith(" GMT"));
         
-        // The formatted date should contain current year (since it uses new Date())
-        assertTrue(formattedDate.contains("2024") || formattedDate.contains("2025"));
-        
-        // Should contain a valid month abbreviation
-        boolean hasValidMonth = formattedDate.matches(".*\\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\\b.*");
-        assertTrue(hasValidMonth);
+        // The formatted date should match the expected format for the specific date
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss 'GMT'");
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+        String expected = sdf.format(specificDate);
+        assertEquals(expected, formattedDate);
     }
 
     @Test
