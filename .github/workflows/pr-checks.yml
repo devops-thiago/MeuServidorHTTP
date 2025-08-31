@@ -28,14 +28,8 @@ jobs:
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-m2
     
-    - name: Run tests
-      run: mvn clean test -Dmaven.test.failure.ignore=true
-    
-    - name: Generate coverage report
-      run: mvn jacoco:report
-    
-    - name: Check code coverage threshold (80%)
-      run: mvn jacoco:check
+    - name: Run tests and verify coverage (80% required)
+      run: mvn clean verify -Dmaven.test.failure.ignore=true
     
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v4
