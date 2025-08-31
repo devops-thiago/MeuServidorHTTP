@@ -31,9 +31,10 @@ public class Util {
 
     static String formatarDataGMT(Date date) {
         //cria um formato para o GMT espeficicado pelo HTTP
-        SimpleDateFormat formatador = new SimpleDateFormat("E, dd MMM yyyy hh:mm:ss", Locale.ENGLISH);
+        SimpleDateFormat formatador = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss", Locale.ENGLISH);
         formatador.setTimeZone(TimeZone.getTimeZone("GMT"));
-        Date data = new Date();
+        // Use the passed date parameter instead of creating a new Date
+        Date data = (date != null) ? date : new Date();
         //Formata a dara para o padrao
         return formatador.format(data) + " GMT";
     }
