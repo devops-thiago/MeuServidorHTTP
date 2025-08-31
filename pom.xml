@@ -56,6 +56,12 @@
         <mockito.version>5.5.0</mockito.version>
         <jacoco.version>0.8.11</jacoco.version>
         <maven.surefire.plugin.version>3.1.2</maven.surefire.plugin.version>
+        <sonar.maven.plugin.version>4.0.0.4121</sonar.maven.plugin.version>
+        
+        <!-- SonarCloud properties -->
+        <sonar.organization>devops-thiago</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.projectKey>devops-thiago_MeuServidorHTTP</sonar.projectKey>
     </properties>
 
     <build>
@@ -125,6 +131,13 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            
+            <!-- SonarCloud Maven Plugin -->
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>${sonar.maven.plugin.version}</version>
             </plugin>
         </plugins>
     </build>
