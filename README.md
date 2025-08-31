@@ -1,5 +1,12 @@
 # MeuServidorHTTP
 
+[![Build Status](https://github.com/devops-thiago/MeuServidorHTTP/workflows/CI/badge.svg)](https://github.com/devops-thiago/MeuServidorHTTP/actions)
+[![codecov](https://codecov.io/gh/devops-thiago/MeuServidorHTTP/branch/master/graph/badge.svg)](https://codecov.io/gh/devops-thiago/MeuServidorHTTP)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=devops-thiago_MeuServidorHTTP&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=devops-thiago_MeuServidorHTTP)
+[![License: GPL v2](https://img.shields.io/badge/License-GPL_v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
+[![Java Version](https://img.shields.io/badge/Java-17+-blue.svg)](https://www.oracle.com/java/)
+[![Maven Central](https://img.shields.io/maven-central/v/br.unesp.sjrp/meu-servidor-http.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22br.unesp.sjrp%22%20AND%20a:%22meu-servidor-http%22)
+
 Implementação simples de um Servidor HTTP em Java
 
 ## Descrição
