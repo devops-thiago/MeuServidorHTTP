@@ -133,4 +133,33 @@ class UtilTest {
         boolean hasEnglishDay = formattedDate.matches(".*\\b(Mon|Tue|Wed|Thu|Fri|Sat|Sun),.*");
         assertTrue(hasEnglishDay);
     }
+
+    @Test
+    void testFormatarDataGMTWithCurrentDate() {
+        // Test the path where we pass null and it creates new Date()
+        String formattedDate = Util.formatarDataGMT(null);
+        
+        assertNotNull(formattedDate);
+        assertTrue(formattedDate.endsWith(" GMT"));
+        
+        // Should match the expected format structure
+        assertTrue(formattedDate.matches("\\w{3}, \\d{1,2} \\w{3} \\d{4} \\d{2}:\\d{2}:\\d{2} GMT"));
+    }
+
+    @Test
+    void testFormatarDataGMTTimezone() {
+        // Test that the method correctly uses GMT timezone
+        Date testDate = new Date();
+        String formattedDate = Util.formatarDataGMT(testDate);
+        
+        // The date should end with " GMT"
+        assertTrue(formattedDate.endsWith(" GMT"));
+        
+        // Compare with standard GMT formatting to ensure timezone is correct
+        java.text.SimpleDateFormat expectedFormat = new java.text.SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss 'GMT'");
+        expectedFormat.setTimeZone(java.util.TimeZone.getTimeZone("GMT"));
+        String expected = expectedFormat.format(testDate);
+        
+        assertEquals(expected, formattedDate);
+    }
 }
